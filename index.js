@@ -3,6 +3,11 @@
 <head>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#5c27d6" />
+  <script>
+
+  firebase.initializeApp(firebaseConfig);
+</script>
+
   <meta charset="UTF-8" />
   <title>Event Calendar</title>
   <style>
@@ -129,7 +134,7 @@
   font-size: 24px;
   margin-left: 10px;
 }
-.deletebuttons{
+.buttons{
       background: #5c27d6;
       color: white;
       padding: 10px 20px;
@@ -204,9 +209,20 @@
   </style>
 </head>
 <body>
+<div id="loginContainer" style="text-align:center; margin-top: 50px;">
+  <h2>Login to Access the Event Calendar</h2>
+  <input type="email" id="loginEmail" placeholder="Enter Username" required>
+  <input type="password" id="loginPassword" placeholder="Enter Password" required>
+  <br><br>
+  <button class="buttons" onclick="loginUser()">Login</button>
+</div>
+
+<div id="calendarApp" style="display:none;">
+  <!-- Your calendar UI code here -->
 <div class="header-bar">
   <img src="https://logodix.com/logo/2052162.png" alt="Left Logo" class="logo-left">
   <h1>Andhra University Centenary Celebrations Event Calendar</h1>
+  <button onclick="logoutUser()" style="position: absolute; right: 30px; top: 30px; padding: 8px 16px; background: #5c27d6; color: white; border: none; border-radius: 6px; cursor: pointer;">Logout</button>
   <img src="https://andhrauniversity.edu.in/img/au-century-logo2025.jpg" alt="Right Logo" class="logo-right">
 </div>
 
@@ -250,10 +266,14 @@
   <div id="confirmDeleteModal">
     <div class="modal-content">
       <p>Are you sure you really want to delete the event?</p>
-      <button class="deletebuttons" onclick="cancelDelete()">Cancel</button>
-      <button class="deletebuttons" onclick="confirmDelete()">Delete</button>
+      <button class="buttons" onclick="cancelDelete()">Cancel</button>
+      <button class="buttons" onclick="confirmDelete()">Delete</button>
     </div>
   </div>
+</div>
+
+
+
   <script>
   const monthNames = [..."January February March April May June July August September October November December".split(" ")];
   const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -427,6 +447,29 @@ let eventData = JSON.parse(localStorage.getItem("calendarEvents") || "{}");
     });
   });
 }
+
+  const validEmail = "au100";
+  const validPassword = "au@100";
+
+  function loginUser() {
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+
+    if (email === validEmail && password === validPassword) {
+      document.getElementById('loginContainer').style.display = 'none';
+      document.getElementById('calendarApp').style.display = 'block';
+    } else {
+      alert("Invalid username or password");
+    }
+  }
+
+  function logoutUser() {
+  document.getElementById('calendarApp').style.display = 'none';
+  document.getElementById('loginContainer').style.display = 'block';
+  document.getElementById('loginEmail').value = '';
+  document.getElementById('loginPassword').value = '';
+}
+
 
   </script>
 </body>
